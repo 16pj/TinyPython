@@ -1,6 +1,7 @@
 from flask import Flask
 import os
 from multiprocessing.dummy import Pool as ThreadPool 
+import subprocess
 
 app = Flask(__name__)
 
@@ -22,6 +23,17 @@ def handleThread(myArrayofArrays):
 	pool = ThreadPool(len(myArrayofArrays)) 
 	results = pool.map(sampleFunction, myArrayofArrays)
 	return results
+
+@app.route("/neighbors")
+def neighbors():
+	cmd = '''nmap -sn 192.168.1.0/24 --exclude 192.168.1.1 | grep -o 192.*'''
+	sub = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+	out, err = sub.communicate()
+	
+	ips = out.split()
+	clean_ips = [ip.strip() for ip in ips]
+	ip_msg = ', '.join(clean_ips)
+	return ip_msg
 
 
 @app.route("/")
