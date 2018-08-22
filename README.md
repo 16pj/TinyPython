@@ -6,3 +6,4 @@
 4) Web Crawler
 5) Simple drawing tool based on Tkinter module
 6) Instantiating a vm in openstack
+7) ZeroMq experiments
